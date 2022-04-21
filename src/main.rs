@@ -1,3 +1,9 @@
+mod config;
+mod args;
+
+extern crate dirs;
+
+
 fn main() {
-    println!("Hello, world!");
+    config::Config::new();
 }
