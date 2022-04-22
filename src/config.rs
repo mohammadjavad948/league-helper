@@ -4,7 +4,7 @@ use serde::{Deserialize};
 use std::fs;
 
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct Config {
     pub launch_helper_location: String,
     pub loop_interval_ms: u32

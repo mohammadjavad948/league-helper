@@ -8,5 +8,7 @@ fn main() {
     // check the config file
     config::Config::check();
 
-    config::Config::new();
+    let conf = config::Config::new();
+
+    println!("{:?}", conf);
 }
