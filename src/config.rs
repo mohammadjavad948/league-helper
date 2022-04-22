@@ -1,10 +1,13 @@
 use crate::args::Args;
 use clap::Parser;
+use serde::{Deserialize};
 use std::fs;
 
 
+#[derive(Deserialize)]
 pub struct Config {
-
+    pub launch_helper_location: String,
+    pub loop_interval_ms: u32
 }
 
 impl Config {
@@ -24,14 +27,20 @@ impl Config {
 
         location
     }
-    pub fn new() -> Result<Config, &'static str>{
+    pub fn new() -> Config {
         let location = Config::get_location();
 
         let file = fs::read_to_string(&location).unwrap();
 
-        // todo: parse config file
+        let deserialize: Result<Config, serde_json::Error> = serde_json::from_str(&*file);
 
-        Ok(Config {})
+        if deserialize.is_err() {
+            println!("cant deserialize the config file. try deleting it and run the app again");
+
+            std::process::exit(1);
+        }
+
+        deserialize.unwrap()
     }
     pub fn check() {
         let location = Config::get_location();
@@ -43,7 +52,7 @@ impl Config {
 
             fs::write(
                 &location,
-                r#"{"launch_helper_location": "", "loop_interval": ""}"#
+                r#"{"launch_helper_location": "", "loop_interval_ms": 1000}"#
             );
 
             std::process::exit(1);
