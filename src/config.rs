@@ -4,10 +4,10 @@ use serde::{Deserialize};
 use std::fs;
 
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize)]
 pub struct Config {
     pub launch_helper_location: String,
-    pub loop_interval_ms: u32
+    pub loop_interval_ms: u64
 }
 
 impl Config {
