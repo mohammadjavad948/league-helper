@@ -8,7 +8,7 @@ pub struct Config {
 }
 
 impl Config {
-    pub fn new() -> Result<Config, &'static str>{
+    pub fn get_location() -> String {
         let args = Args::parse();
 
         let mut location = String::new();
@@ -22,20 +22,31 @@ impl Config {
             location = args.config.unwrap();
         }
 
+        location
+    }
+    pub fn new() -> Result<Config, &'static str>{
+        let location = Config::get_location();
+
+        let file = fs::read_to_string(&location).unwrap();
+
+        // todo: parse config file
+
+        Ok(Config {})
+    }
+    pub fn check() {
+        let location = Config::get_location();
+
         let file = fs::read_to_string(&location);
 
         if file.is_err() {
             println!("cannot find the config file, creating a new one.");
 
-            fs::write(&location, "hello");
+            fs::write(
+                &location,
+                r#"{"launch_helper_location": "", "loop_interval": ""}"#
+            );
 
             std::process::exit(1);
         }
-
-        let file = file.unwrap();
-
-        // todo: parse config file
-
-        Ok(Config {})
     }
 }
